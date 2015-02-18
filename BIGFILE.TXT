@@ -1,0 +1,1377 @@
+:::::::::::::::::::::::::::::::::::::::::::::::PHP 5.3 Features:::::::::::::::::::::::::::::::::::::
+
+1) Namespaces for classes and functions
+2) MySQL Native Driver
+Being a native driver we should be able to get much faster execution times.
+3) phar – PHp ARchive
+group all the files into one simple file, we will be able to deliver and run an entire PHP application from a single file!
+4) Closures & Lambdas
+<?php
+$hellolambda = function () {
+echo "Hello world via Lambda";
+ 
+}
+$hellolambda(); // Outputs Hello world via Lambda
+?>
+5)Ternary operator
+
+::::::::::::::::::::::::::::::::::::::::::::::::important notes :::::::::::::::::::::::::::::::::::: 
+
+1. 	__construct() and nameOfClass() both can be used as contructors but __construct has higher priority.
+	__construct cam in php 5.5
+
+2. you cannot call a function declared as protected or private from a object directly gives a Fatal error.
+
+3. you cannot acces the private property directly from a object gives a Fatal error however you can access a protected member through an object.
+
+4. If you try to access non static members through self keyword gives a fatal error
+
+5. desctruct runs when object references finish or when script is over
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::php 5.5::::::::::::::::::::::::::::::::::::::::::::::
+
+hashing api with crypt() to encrypt passwprds.
+supports list in foreach
+finally keyword in try catch
+classname resolution classname::class; - give complete class path with namespaces. 
+
+::::::::::::::::::::::::::::::::::::::::::::::XML Example ::::::::::::::::::::::::::::::::::::::::::
+--------------------------------------------------------
+    functions used                                     |
+--------------------------------------------------------
+1. simplexml_load_string($str)                         |
+2. simplexml_load_file($fileName)                      |
+3. asXML()                                             |
+4. addChild()                                          |
+--------------------------------------------------------			
+
+<?php
+$xml = simplexml_load_file('test.xml');
+//simplexml_load_string($str)
+//echo "<pre>";print_r($xml); //shows xml as an obj
+
+//get age of siddarth from xml
+echo $xml->person[0]->age;
+
+//get permanent add see {} coz of - (hyphen)
+echo $xml->person[0]->{permanent-add};
+
+//get the attribute value
+echo $xml->person[0]->type;
+
+//view it as xml
+echo $xml->asXML();
+
+//add a child
+$xml->person[0]->addChild('height','6'); 
+
+
+//loop
+foreach ($xml->person[0] as $data) {
+	echo $data;
+}
+?>
+
+php code ends
+-------------
+
+xml file starts
+---------------
+<?xml version ='1.0'?>
+<people>
+	<person type="boy">
+		<name>Siddarth</name>
+		<age>24</age>
+		<permanent-add>Delhi</permanent-add>
+	</person>
+	
+	<person>
+		<name>John</name>
+		<age>25</age>
+		<permanent-add>Mumbai</permanent-add>
+	</person>
+</people>
+xml file ends
+--------------
+
+
+::::::::::::::::::::::::::::::::::::::::::::::SESSION WITHOUT COKKIES ::::::::::::::::::::::::::::::::::
+
+you can set your session.use_only_cookies to "0" to force the appendage of a session ID to URLs within your php. This approach, however, has several draw backs. Mainly that of keeping the state within the URL, as opposed to the Cookie header. If a user were to copy and paste the URL of the page they were on, and someone else were to click on it, they would both be using the same session.
+
+<?php
+     ini_set("session.use_cookies",0);
+     ini_set("session.use_only_cookies",0);
+     ini_set("session.use_trans_sid",1); # Forgot this one!
+     session_start();
+?>
+
+
+::::::::::::::::::::::::::::::::::::::::::::::SQL INJECTION:::::::::::::::::::::::::::::::::::::::::::::
+
+SQL Injection is the hacking technique which attempts to pass SQL commands (statements) through a web application for execution by the backend database.
+
+SQL Injection is one of the many web attack mechanisms used by hackers to steal data from organizations.
+
+SQL Injection is type of attack that can be done through user inputs (Inputs that filled by user and then used inside queries).
+
+The SQL Injection patterns are correct query syntax so we can call them ‘bad queries for bad reasons’.
+
+code :
+<?php
+$username = $_POST['username'];
+$password = $_POST['password'];
+
+$query = "SELECT userid FROM users WHERE username = '".$username."' AND password = '".$password."'";
+
+//providing john as username and password is provided as following: any' OR 'x' = 'x
+
+echo $query;
+?>
+
+Output:
+SELECT userid FROM users WHERE username = 'john' AND password = 'any' OR 'x'='x'
+
+This will allow the attacker to bypass the login form without actually knowing a valid username / password combination!
+
+csrf - http://www.wikihow.com/Prevent-Cross-Site-Request-Forgery-(CSRF)-Attacks-in-PHP
+xss  - http://phpsecurity.readthedocs.org/en/latest/Cross-Site-Scripting-(XSS).html
+sql injection
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::ARRAY FUNCTIONS ::::::::::::::::::::::::::::::::::::::::
+
+1. sizeof($arr)	"This function returns the number of elements in an array.
+Use this function to find out how many elements an array contains; this information is most commonly used to initialize a loop counter when processing the array."	"Code:
+$data = array(""red"", ""green"", ""blue"");
+
+echo ""Array has "" . sizeof($data) . "" elements"";
+?>
+
+Output:
+Array has 3 elements"
+
+
+2.array_values($arr)	"This function accepts a PHP array and returns a new array containing only its values (not its keys). Its counterpart is the array_keys() function.
+Use this function to retrieve all the values from an associative array."	"Code:
+$data = array(""hero"" => ""Holmes"", ""villain"" => ""Moriarty"");
+print_r(array_values($data));
+?>
+
+Output:
+Array
+(
+[0] => Holmes
+[1] => Moriarty
+)"
+
+
+3.array_keys($arr)	"This function accepts a PHP array and returns a new array containing only its keys (not its values). Its counterpart is the array_values() function.
+Use this function to retrieve all the keys from an associative array."	"Code:
+$data = array(""hero"" => ""Holmes"", ""villain"" => ""Moriarty"");
+print_r(array_keys($data));
+?>
+
+Output:
+Array
+(
+[0] => hero
+[1] => villain
+)"
+
+
+4.array_pop($arr)	This function removes an element from the end of an array.	"Code:
+$data = array(""Donald"", ""Jim"", ""Tom"");
+array_pop($data);
+print_r($data);
+?>
+
+Output:
+Array
+(
+[0] => Donald
+[1] => Jim
+)"
+
+
+5.array_push($arr, $val)	This function adds an element to the end of an array.	"Code:
+$data = array(""Donald"", ""Jim"", ""Tom"");
+array_push($data, ""Harry"");
+print_r($data);
+?>
+
+Output:
+Array
+(
+[0] => Donald
+[1] => Jim
+[2] => Tom
+[3] => Harry
+)"
+
+
+6.array_shift($arr)	This function removes an element from the beginning of an array.	"Code:
+$data = array(""Donald"", ""Jim"", ""Tom"");
+array_shift($data);
+print_r($data);
+?>
+
+Output:
+Array
+(
+[0] => Jim
+[1] => Tom
+)"
+
+
+7.array_unshift($arr, $val)	This function adds an element to the beginning of an array.	"Code:
+$data = array(""Donald"", ""Jim"", ""Tom"");
+array_unshift($data, ""Sarah"");
+print_r($data);
+?>
+
+Output:
+Array
+(
+[0] => Sarah
+[1] => Donald
+[2] => Jim
+[3] => Tom
+)"
+
+
+8.each($arr)	This function is most often used to iteratively traverse an array. Each time each() is called, it returns the current key-value pair and moves the array cursor forward one element. This makes it most suitable for use in a loop.	"Code:
+$data = array(""hero"" => ""Holmes"", ""villain"" => ""Moriarty"");
+while (list($key, $value) = each($data)) {
+echo ""$key: $value \n"";
+}
+?>
+
+Output:
+hero: Holmes 
+villain: Moriarty"
+
+
+9.sort($arr)	"This function sorts the elements of an array in ascending order. String values will be arranged in ascending alphabetical order.
+Note: Other sorting functions include asort(), arsort(), ksort(), krsort() and rsort()."	"Code:
+$data = array(""g"", ""t"", ""a"", ""s"");
+sort($data);
+print_r($data);
+?>
+
+Output:
+Array
+(
+[0] => a
+[1] => g
+[2] => s
+[3] => t
+)"
+
+
+10.array_flip($arr)	"The function exchanges the keys and values of a PHP associative array.
+Use this function if you have a tabular (rows and columns) structure in an array, and you want to interchange the rows and columns."	"Code:
+$data = array(""a"" => ""apple"", ""b"" => ""ball"");
+print_r(array_flip($data));
+?>
+
+Output:
+Array
+(
+[apple] => a
+[ball] => b
+)"
+
+
+11.array_reverse($arr)	"The function reverses the order of elements in an array.
+Use this function to re-order a sorted list of values in reverse for easier processing—for example, when you're trying to begin with the minimum or maximum of a set of ordered values."	"Code:
+$data = array(10, 20, 25, 60);
+print_r(array_reverse($data));
+?>
+
+Output:
+Array
+(
+[0] => 60
+[1] => 25
+[2] => 20
+[3] => 10
+)"
+
+
+12.array_merge($arr)	"This function merges two or more arrays to create a single composite array. Key collisions are resolved in favor of the latest entry.
+Use this function when you need to combine data from two or more arrays into a single structure—for example, records from two different SQL queries."	"Code:
+$data1 = array(""cat"", ""goat"");
+$data2 = array(""dog"", ""cow"");
+print_r(array_merge($data1, $data2));
+?>
+
+Output:
+Array
+(
+[0] => cat
+[1] => goat
+[2] => dog
+[3] => cow
+)"
+
+
+13.array_rand($arr)	"This function selects one or more random elements from an array.
+Use this function when you need to randomly select from a collection of discrete values—for example, picking a random color from a list."	"Code:
+$data = array(""white"", ""black"", ""red"");
+echo ""Today's color is "" . $data[array_rand($data)];
+?>
+
+Output:
+Today's color is red"
+
+14.array_search($search, $arr)	"This function searches the values in an array for a match to the search term, and returns the corresponding key if found. If more than one match exists, the key of the first matching value is returned.
+Use this function to scan a set of index-value pairs for matches, and return the matching index."	"Code:
+$data = array(""blue"" => ""#0000cc"", ""black"" => ""#000000"", ""green"" => ""#00ff00"");
+echo ""Found "" . array_search(""#0000cc"", $data);
+?>
+
+Output:
+Found blue"
+
+
+15.array_slice($arr, $offset, $length)	"This function is useful to extract a subset of the elements of an array, as another array. Extracting begins from array offset $offset and continues until the array slice is $length elements long.
+Use this function to break a larger array into smaller ones—for example, when segmenting an array by size (""chunking"") or type of data."	"Code:
+$data = array(""vanilla"", ""strawberry"", ""mango"", ""peaches"");
+print_r(array_slice($data, 1, 2));
+?>
+
+Output:
+Array
+(
+[0] => strawberry
+[1] => mango
+)"
+
+
+16.array_unique($data)	"This function strips an array of duplicate values.
+Use this function when you need to remove non-unique elements from an array—for example, when creating an array to hold values for a table's primary key."	"Code:
+$data = array(1,1,4,6,7,4);
+print_r(array_unique($data));
+?>
+
+Output:
+Array
+(
+[0] => 1
+[3] => 6
+[4] => 7
+[5] => 4
+)"
+
+
+17.array_walk($arr, $func)	"This function ""walks"" through an array, applying a user-defined function to every element. It returns the changed array.
+Use this function if you need to perform custom processing on every element of an array—for example, reducing a number series by 10%."	"Code:
+function reduceBy10(&$val, $key) {
+$val -= $val * 0.1;
+}
+
+$data = array(10,20,30,40);
+array_walk($data, 'reduceBy10');
+print_r($data);
+?>
+
+Output:
+Array
+(
+[0] => 9
+[1] => 18
+[2] => 27
+[3] => 36
+)"
+
+
+::::::::::::::::::::::::::::::::::::::::::STRING FUNCTIONS ::::::::::::::::::::::::::::::::::::::::::
+
+1.addcslashes()	"This string function returns a string also with backslashes before characters and characters are listed as
+parameter."	addcslashes($str, characters)	"<?php
+$mystr = ""How are you."";
+echo addcslashes($mystr, 'r');
+?>"	How a\re you.
+
+2.convert_uuencode()	This string function encodes a string.	convert_uuencode($encrypted_string);	"<?php
+$encrypted_string = ""How Are You"";
+echo convert_uuencode($encrypted_string);
+?>"	+2&]W($%R92!9;W4` `
+
+3.convert_uudecode()	This string function decodes a string that is uuencoded	convert_uudecode($encrypted_string);	"<?php
+$encrypted_string = ""+2&]W($%R92!9;W4` `"";
+echo convert_uudecode($encrypted_string);
+?>"	How Are You
+
+4.explode()	explode() explodes or break a string into an array.	explode(string_separator, $str, limit)	"<?php
+$mystr = ""Hello Dear, How are you"";
+print_r(explode("" "", $mystr));
+?>"	Array ( [0] => Hello [1] => Dear, [2] => How [3] => are [4] => you )
+
+5.implode()	it joins an array into a sring	imlode(string_separator, array);	"<?php
+$arr = array(""Hello"", ""Dear"", ""How"", ""Are"", ""You"");
+echo implode("" "", $arr);
+?>"	Hello Dear How Are You
+
+6.md5()	"md5() function calculates MessageDigest
+Algorithm (md5) hash of a string"	md5($str, raw);	"<?php
+$mystr = ""How Are You"";
+echo md5($mystr);
+?>"	9e227bb366c119c7f27a7115f0136f42
+
+7.str_replace()		str_replace(find, replace, string, count)	"<?php
+echo str_replace(""How"", ""Dear"", ""How Di"");
+?>"	How Dear
+str_split()	it is used for splitting a string into an array	str_split($mystring, length);	"<?php
+print_r(str_split(""What""));
+?>"	"Array
+(
+[0] => W
+[1] => h
+[2] => a
+[3] => T
+)"
+
+8.str_word_count()	This function is used for counting the words in a string	str_word_count(string, return, char);	"<?php
+echo str_word_count(""What are you doing"");
+?>"	4
+
+9.strcmp()	"This casesensitive
+string function is used for comparing two strings. It returns “0″ if both strings are
+equal, “<0″ if first string is less than second string and “>0″ if first string is greater than second string."	strcmp(first string, second string)	"<?php
+echo strcmp(""What Are You Doing"", ""What I Should Do"");
+?>"	-1
+
+10.strlen()		strlen($str);	"<?php
+echo strlen(""Oh, No!"");
+?>"	7
+
+11.strrpos()	gives last occurrence of the string to be matched in a string	strrpos(string, find, start)	"<?php
+echo strrpos(""Where are you going?"", ""go"");
+?>"	14
+
+12.strstr()	"strstr() finds the first occurrence of a string in a string, if found it returns at the matching point else it
+returns 0."	strstr($string,$find);	"<?php
+echo strstr('Hi What', 'Hi');
+?>"	Hi What
+
+13.strtolower()			"<?php
+echo strtolower(""Now WhaT are"");
+?>"	now what are
+
+14.strtoupper()			"<?php
+echo strtoupper(""Yes"");
+?>"	YES
+
+15.substr()		substr($str, start, length)	"<?php
+echo substr(""Where I Can Find You"", 7);
+?>"	Can Find You
+
+16.strrev()		strrev($str)	"<?php
+echo strrev( 'Test strrev here' );
+?>"	ereh verrts tseT
+
+:::::::::::::::::::::::::::::::::::::::::::FILE FUNCTIONS ::::::::::::::::::::::::::::::::::::::::
+
+1.filesize($file)	This function returns the size of a file, in bytes. It's useful to calculate how much space a file occupies on disk.	<?php
+		// get file size in bytes
+		echo "Size is " . filesize('myfile.html') . " bytes";
+		?>
+		
+2.fileowner($file)	These functions return the owner and group ID for a file. They're useful to find out who "owns" a particular file.	<?php
+filegroup($file)		// get file owner and group
+		echo "UID: " . fileowner('myfile.html');
+		echo "GID: " . filegroup('myfile.html');
+		?>
+		
+3.fileatime($file)	These functions return a timestamp indicating when a file was last accessed and modified respectively. They're useful to find out if a file has changed since a particular date.	<?php
+filemtime($file)		// get file access/modification times
+		echo "Last accessed on: " . date("d-m-y", fileatime('myfile.html'));
+		
+		echo "Last modified on: " . date("d-m-y", filemtime('myfile.html'));
+		?>
+		
+4.fileperms($file)	This function returns the permissions of a file. Use it to check if a file is readable, writable or executable.	<?php
+		// get permissions in octal format
+		echo "File permissions: " . sprintf('%o', fileperms('myfile.html'));
+		?>
+		
+5.filetype($file)	This function returns the "type" of a file - whether link, directory, character or block device, or regular file. Use this to test the nature of a file before using it in an operation.	<?php
+		// get file type
+		echo "File type: " . filetype('myfile.html');
+		?>
+		
+6.stat($file)	This function is a "catch all" function that returns detailed statistics about a file, including its owner and group, size, time of last change, block usage and inode number. Use this function instead of the functions listed previously if you need to obtain complete file statistics in a single call.	<?php
+		// get file statistics
+		print_r(stat('myfile.html'));
+		?>
+7.realpath($file)	This function turns a relative file path into an absolute path. It's useful when you need to find out exactly where a file is located on disk.	<?php
+		// get absolute path
+		// returns "/tmp/myfile.html"
+		echo "File path: " . realpath("./cook/book/../../myfile.html");
+		?>
+		
+8.basename($file)	Given a complete file path, these functions can split it into its constituent parts and separately return the file name and directory name respectively.	<?php
+
+9.dirname($path)		// split directory and file names
+		// returns "/usr/local/bin"
+		echo "Directory: " . dirname("/usr/local/bin/php");
+		
+		// returns "php"
+		echo "File: " . basename("/usr/local/bin/php");
+		?>
+		
+10.file($file)	This function reads the contents of a file into an array. Each element of the array represents one line of the file. This function is useful to read a file's contents into a variable, so that it can be processed further.	<?php
+		// read file contents
+		$lines = file('myfile.html');
+		
+		// print line by line
+		for($x=1; $x<=sizeof($lines); $x++) {
+		    echo "Line $x: " . $lines[$x-1] . "\n";
+		}
+		?>
+
+::::::::::::::::::::::::::::::::::::::::::::OPERATORS ::::::::::::::::::::::::::::::::::::::::::::::::
+
+-$a	Negation	Opposite of $a.
+$a + $b	Addition	Sum of $a and $b.
+$a - $b	Subtraction	Difference of $a and $b.
+$a * $b	Multiplication	Product of $a and $b.
+$a / $b	Division	Quotient of $a and $b.
+$a % $b	Modulus	Remainder of $a divided by $b.
+
+:::::::::::::::::::::::::::::::::::::::::::MATH FUNCTIONS :::::::::::::::::::::::::::::::::::::::::
+		
+1.abs	Returns the absolute value of number.	"<?php
+$abs1 = abs(-3.2); // $abs = 3.2; (double/float)
+$abs2 = abs(4); // $abs2 = 4; (integer)
+$abs3 = abs(-4); // $abs3 = 4; (integer)
+?>"
+
+2. base_convert	Convert a number between arbitrary bases	"<?php
+$hexadecimal = 'A37334';
+echo base_convert($hexadecimal, 16, 2); // 101000110111001100110100
+?>"
+
+3.bindec	binary to decimal	"<?php
+echo bindec('110011') . ""\n""; // 51
+echo bindec('000110011') . ""\n""; // 51
+ 
+echo bindec('111'); // 7
+?>"
+
+4.ceil	round up upwards	"<?php
+echo ceil(4.3); // 5
+echo ceil(9.999); // 10
+echo ceil(-3.14); // -3
+?>"
+
+5.dechex	decimal to hexa	"<?php
+echo dechex(10) . ""\n"";
+echo dechex(47);
+?>"
+
+6.decoct	decimal to ocatal	"<?php
+echo decoct(15) . ""\n"";
+echo decoct(264);
+?>"
+
+7.floor	round up downwards	"<?php
+echo floor(4.3); // 4
+echo floor(9.999); // 9
+echo floor(-3.14); // -4
+?>"
+
+8.is_nan	finds whether number or not return boolean value	"var_dump( is_nan(10));
+
+9.pow		"<?php
+var_dump(pow(2, 8)); // int(256)
+echo pow(-1, 20); // 1
+echo pow(0, 0); // 1
+ 
+echo pow(-1, 5.5); // PHP >4.0.6 NAN
+echo pow(-1, 5.5); // PHP <=4.0.6 1.#IND
+?>"
+
+10.rand		"<?php
+echo rand() . ""\n""; // 7771
+echo rand() . ""\n""; // 22264
+echo rand(5, 15); // 11
+?>"
+
+:::::::::::::::::::::::::::::::::::::::::::MYSQL FUNCTIONS ::::::::::::::::::::::::::::::::::::
+
+1.mysql_connect()	Creates a database connection	mysql_connect( "mysql_server_hostname", "user", "passwd");
+2.mysql_pconnect()	Creates a persistant database connection	mysql_pconnect( "mysql_server_hostname", "user", "passwd");
+3.mysql_select_db()	Selects the database to connect to.	mysql_select_db( "DB_name")
+4.mysql_query()	Contains the SQL query.	$query= mysql_query( "SELECT * FROM some_table WHERE Name='$somename'")
+5.mysql_fetch_row()	fetches a row into an array	$array = mysql_fetch_row( $result )
+6.mysql_fetch_array()	Fetches the requested data into an associative or numeric array.	while ($row= mysql_fetch_array( $result ))
+7.mysql_num_rows()	Returns the number of rows returned.	$num_rows = mysql_num_rows($query);
+8.mysql_create_db()	Create a Database.	mysql_create_db( "DB_name");
+9.mysql_drop_db()	Delete a Database.	mysql_drop_db( "DB_name");
+10.mysql_free_result()	"Frees memory identified with the result identifier.
+(Usually not necessary)."	mysql_free_result( $result );
+
+
+:::::::::::::::::::::::::::::::::::::::CALL BY VALUE AND CALL BY REF :::::::::::::::::::::::::::
+
+Call by value and call by reference :
+
+$$a = b; in PHP means "take the value of $a, and set the variable whose name is that value to equal b".
+
+In other words:
+
+$foo = "bar";
+$$foo = "baz";
+echo $bar; // outputs 'baz'
+But yeah, take a look at the PHP symbol reference.
+
+As for call by value/reference - the primary difference between the two is whether or not you're able to modify the original items that were used to call the function. See:
+
+function increment_value($y) {
+    $y++;
+    echo $y;
+}
+
+function increment_reference(&$y) {
+    $y++;
+    echo $y;
+}
+
+$x = 1;
+increment_value($x); // prints '2'
+echo $x; // prints '1'
+increment_reference($x); // prints '2'
+echo $x; // prints '2'
+Notice how the value of $x isn't changed by increment_value(), but is changed by increment_reference().
+
+As demonstrated here, whether call-by-value or call-by-reference is used depends on 
+the definition of the function being called; the default when declaring your own functions 
+is call-by-value (but you can specify call-by-reference via the & sigil).
+
+:::::::::::::::::::::::::::::::::::::::OUTPUT BUFFER :::::::::::::::::::::::::::::::::::::::::
+
+To create a new output buffer and start writing to it, call ob_start(). There are two ways to end a buffer, which are ob_end_flush() and ob_end_clean() - the former ends the buffer and sends all data to output, and the latter ends the buffer without sending it to output. Every piece of text outputted while an output buffer is open is placed into that buffer as opposed to being sent to output. Consider the following script:
+
+<?php
+    ob_start();
+    print "Hello First!\n";
+    ob_end_flush();
+
+    ob_start();
+    print "Hello Second!\n";
+    ob_end_clean();
+
+    ob_start();
+    print "Hello Third!\n";
+?>
+
+
+o/p
+
+Hello First
+Hello Third
+
+::::::::::::::::::::::::::::::::::::PROC TRIG FUNCTIONS:::::::::::::::::::::::::::::::::::::::::
+
+------------------------------------------------------------------------------------
+								PROCEDURES
+------------------------------------------------------------------------------------
+mysql> DELIMITER //
+mysql> create procedure GetEmployeeName(IN id INT, OUT name VARCHAR(20))
+    -> begin
+    -> select emp_name into name from employee where emp_id = id;
+    -> end//
+Query OK, 0 rows affected (0.52 sec)
+
+mysql> DELIMITER ;
+
+mysql> call GetEmployeeName(103, @name);
+Query OK, 1 row affected (0.05 sec)
+
+
+mysql> select @name;
++-------+
+| @name |
++-------+
+| Jack  |
++-------+
+
+------------------------------------------------------------------------------------
+								FUNCTIONS
+------------------------------------------------------------------------------------
+
+DELIMITER $$
+CREATE FUNCTION calcProfit(cost FLOAT, price FLOAT) RETURNS DECIMAL(9,2)
+BEGIN
+  DECLARE profit DECIMAL(9,2);
+  SET profit = price-cost;
+  RETURN profit;
+END$$
+DELIMITER ;
+
+
+Call
+
+SELECT *, calcProfit(prod_cost,prod_price) AS profit FROM products;
+
+------------------------------------------------------------------------------------
+								VIEWS
+------------------------------------------------------------------------------------
+
+
+mysql> SELECT * FROM user;
++----------+-----------+--------+
+| userid   | password  | name   |
++----------+-----------+--------+
+| scott123 | 123@sco   | Scott  |
+| ferp6734 | dloeiu@&3 | Palash |
+| diana094 | ku$j@23   | Diana  |
++----------+-----------+--------+
+3 rows in set (0.04 sec)
+mysql> CREATE VIEW my_v2 AS SELECT * FROM user;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> SELECT * FROM my_v2;
++----------+-----------+--------+
+| userid   | password  | name   |
++----------+-----------+--------+
+| scott123 | 123@sco   | Scott  |
+| ferp6734 | dloeiu@&3 | Palash |
+| diana094 | ku$j@23   | Diana  |
++----------+-----------+--------+
+3 rows in set (0.05 sec)
+Now specify the columns name in the above view :
+
+mysql> CREATE VIEW my_v3 AS SELECT userid AS User_ID, password AS Password, name AS Name  FROM user;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> SELECT * FROM my_v3;
++----------+-----------+--------+
+| User_ID  | Password  | Name   |
++----------+-----------+--------+
+| scott123 | 123@sco   | Scott  |
+| ferp6734 | dloeiu@&3 | Palash |
+| diana094 | ku$j@23   | Diana  |
++----------+-----------+--------+
+3 rows in set (0.04 sec)
+- See more at: http://www.w3resource.com/mysql/mysql-views.php#sthash.ZYLgov7u.dpuf
+------------------------------------------------------------------------------------
+								TRIGGERS
+------------------------------------------------------------------------------------
+
+mysql> delimiter //
+mysql> CREATE TRIGGER upd_check BEFORE UPDATE ON account
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     IF NEW.amount < 0 THEN
+    ->         SET NEW.amount = 0;
+    ->     ELSEIF NEW.amount > 100 THEN
+    ->         SET NEW.amount = 100;
+    ->     END IF;
+    -> END;//
+mysql> delimiter ;
+
+
+delimiter |
+
+CREATE TRIGGER testref BEFORE INSERT ON test1
+  FOR EACH ROW
+  BEGIN
+    INSERT INTO test2 SET a2 = NEW.a1;
+    DELETE FROM test3 WHERE a3 = NEW.a1;
+    UPDATE test4 SET b4 = b4 + 1 WHERE a4 = NEW.a1;
+  END;
+|
+
+delimiter ;
+
+:::::::::::::::::::::::::::::::::::LIST OF STORAGE ENGINES ::::::::::::::::::::::::::::::::::::::
+
+List of storage engines
+
+MySQL supported storage engines:
+
+MyISAM
+InnoDB
+Memory
+CSV
+Merge
+Archive
+Federated
+Blackhole
+Example
+MyISAM is the original storage engine. It is a fast storage engine. It does not support transactions. MyISAM provides table-level locking. It is used most in Web, data warehousing.
+
+InnoDB is the most widely used storage engine with transaction support. It is an ACID compliant storage engine. It supports row-level locking, crash recovery and multi-version concurrency control. It is the only engine which provides foreign key referential integrity constraint.
+
+Memory storage engine creates tables in memory. It is the fastest engine. It provides table-level locking. It does not support transactions. Memory storage engine is ideal for creating temporary tables or quick lookups. The data is lost when the database is restarted.
+
+CSV stores data in csv files. It provides great flexibility, because data in this format is easily integrated into other applications.
+
+Merge operates on underlying MyISAM tables. Merge tables help manage large volumes of data more easily. It logically groups a series of identical MyISAM tables, and references them as one object. Good for data warehousing environments.
+
+Archive storage engine is optimized for high speed inserting. It compresses data as it is inserted. It does not support transactions. It is ideal for storing, retrieving large amounts of seldom referenced historical, archived data.
+
+The Blackhole storage engine accepts but does not store data. Retrievals always return an empty set. The functionality can be used in distributed database design where data is automatically replicated, but not stored locally. This storage engine can be used to perform performance tests or other testing.
+
+Federated storage engine offers the ability to separate MySQL servers to create one logical database from many physical servers. Queries on the local server are automatically executed on the remote (federated) tables. No data is stored on the local tables. It is good for distributed environments.
+
+:::::::::::::::::::::::::::::::::::::::::::::::::PDO ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+<?php
+
+
+try {
+	$dbh = new PDO(	"mysql:host=localhost;dbname=test","root","root");
+	
+	
+	
+	$result = 	$dbh->query("Select * from emp");
+	print_r($result->fetch());
+	print_r($result->fetchAll());
+	print_r($result->fetchAll(PDO::FETCH_OBJ));
+	
+	//insert way 1
+	$result = 	$dbh->exec("Insert into emp(name,email) values('sidarth' , 'sid@g.com')");
+	echo ($result);
+	
+	//insert way 2
+	$query = 	$dbh->prepare("Insert into emp(name,email) values(:name ,:email)");
+	echo $query->execute(array(":name" => "Sid",":email" => "Sid@g.com"))
+	
+	//insert way 3
+	$query = 	$dbh->prepare("Insert into emp(name,email) values(? , ?)");
+	echo $query->execute(array("Sid","Sid@g.com"));
+	
+	//insert way 4
+	$query = 	$dbh->prepare("Insert into emp(name,email) values(? , ?)");
+	$query->bindParam(1,'Sid');
+	$query->bindParam(2,'Sid@g.com');
+	echo $query->execute();
+	
+	
+} catch (PDOException $e) {
+	$e->getMessage();
+}
+
+?>
+
+::::::::::::::::::::::::::::::::::::::::::MAGIC METHODS :::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+/*******************  Magic Methods  **********************/
+* The programmer must actually write the code that defines what the magic function will do. 
+* But, magic functions will never directly be called by the programmer  
+* actually, PHP will call the function behind the scenes. 
+* This is why they are called magic functions  because they are never directly called,
+* and they allow the programmer to do some pretty powerful things
+************************************************************/
+
+/*********************   List    *************************************************************************				
+			__construct()
+			__destruct()
+			__get()
+			__set()
+			__call()
+			__invoke()       -- try to run object as  a func
+			__toString() 	 -- try to run object as  a str
+			__clone()
+			__autoload()
+			
+**********************************************************************************************************/
+<?php
+class Test {
+	
+	/*
+	* @desc -  runs when we try to access a property that does not exist.
+	*/
+	function __get($param) {
+		echo "<br/>$param does not exists.";
+	}
+	
+	/*
+	* @desc -  runs when we try to set a property that does not exist.
+	*/
+	function __set($name,$value) {
+		echo "<br/>you tried to set $name->$value that does not exist";
+	}
+	
+	/*
+	* @desc -  runs when we try to call a function that does not exist.
+	*/
+	function __call($name,$value) {
+		echo "<br/>you tried to call $name($value) that does not exist";
+	}
+	
+	/*
+	* @desc -  runs when we create an  object of a class.
+	*/
+	function __construct($param) {
+		echo "Object Created!";
+	}
+	
+	/*
+	* @desc -  runs when we reference to the class is destroyed.
+	*/
+	function __destruct() {
+		echo "Object Destroyed!";
+	}
+	
+	/*
+	* @desc -  runs when we try to print an object which does not happens normally.
+	* @ex : echo $obj; where $obj is an Object of this class.
+	*/
+	function __toString() {
+		echo "Object Printed!";
+	}
+	
+	/*
+	* @desc -  runs when we create an clone of a object.
+	* ex: $obj1= $obj2; both are different through this
+	*/
+	function __clone() {
+		echo "Object Cloned!";
+	}
+	
+	/*
+	* @desc -  runs when try to run an object as a function.
+	*/
+	function __invoke() {
+		echo "Invoke Called!";
+	}
+	
+
+}
+
+:::::::::::::::::::::::::::::::::::::::PHP HEADERS :::::::::::::::::::::::::::::::::::::::::::
+
+ 
+// Use this header instruction to fix 404 headers
+// produced by url rewriting...
+header('HTTP/1.1 200 OK');
+ 
+// Page was not found:
+header('HTTP/1.1 404 Not Found');
+ 
+// Access forbidden:
+header('HTTP/1.1 403 Forbidden');
+ 
+// The page moved permanently should be used for
+// all redrictions, because search engines know
+// what's going on and can easily update their urls.
+header('HTTP/1.1 301 Moved Permanently');
+ 
+// Server error
+header('HTTP/1.1 500 Internal Server Error');
+ 
+// Redirect to a new location:
+header('Location: http://www.example.org/');
+ 
+// Redriect with a delay:
+header('Refresh: 10; url=http://www.example.org/');
+print 'You will be redirected in 10 seconds';
+ 
+// you can also use the HTML syntax:
+// <meta http-equiv="refresh" content="10;http://www.example.org/ />
+ 
+// override X-Powered-By value
+header('X-Powered-By: PHP/4.4.0');
+header('X-Powered-By: Brain/0.6b');
+ 
+// content language (en = English)
+header('Content-language: en');
+ 
+// last modified (good for caching)
+$time = time() - 60; // or filemtime($fn), etc
+header('Last-Modified: '.gmdate('D, d M Y H:i:s', $time).' GMT');
+ 
+// header for telling the browser that the content
+// did not get changed
+header('HTTP/1.1 304 Not Modified');
+ 
+// set content length (good for caching):
+header('Content-Length: 1234');
+ 
+// Headers for an download:
+header('Content-Type: application/octet-stream');
+header('Content-Disposition: attachment; filename="example.zip"'); 
+header('Content-Transfer-Encoding: binary');
+// load the file to send:
+readfile('example.zip');
+ 
+// Disable caching of the current document:
+header('Cache-Control: no-cache, no-store, max-age=0, must-revalidate');
+header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+header('Pragma: no-cache');
+ 
+// set content type:
+header('Content-Type: text/html; charset=iso-8859-1');
+header('Content-Type: text/html; charset=utf-8');
+header('Content-Type: text/plain'); // plain text file
+header('Content-Type: image/jpeg'); // JPG picture
+header('Content-Type: application/zip'); // ZIP file
+header('Content-Type: application/pdf'); // PDF file
+header('Content-Type: audio/mpeg'); // Audio MPEG (MP3,...) file
+header('Content-Type: application/x-shockwave-flash'); // Flash animation
+ 
+// show sign in box
+header('HTTP/1.1 401 Unauthorized');
+header('WWW-Authenticate: Basic realm="Top Secret"');
+print 'Text that will be displayed if the user hits cancel or ';
+print 'enters wrong login data';
+
+:::::::::::::::::::::::::::::::::::::::::::FILE UPLOAD EXAMPLE :::::::::::::::::::::::::::::::::::::
+
+<?php
+$temp = explode(".", $_FILES["file"]["name"]);
+$extension = end($temp);
+if ($_FILES["file"]["error"] > 0)
+{
+echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
+}
+else
+{
+echo "Upload: " . $_FILES["file"]["name"] . "<br>";
+echo "Type: " . $_FILES["file"]["type"] . "<br>";
+echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
+echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";
+
+if (file_exists("upload/" . $_FILES["file"]["name"]))
+  {
+  echo $_FILES["file"]["name"] . " already exists. ";
+  }
+else
+  {
+  move_uploaded_file($_FILES["file"]["tmp_name"],
+  "upload/" . $_FILES["file"]["name"]);
+  echo "Stored in: " . "upload/" . $_FILES["file"]["name"];
+  }
+}
+  
+?>
+
+:::::::::::::::::::::::::::::::::::EXCEPTION HANDLING ::::::::::::::::::::::::::::::::::::::::::::::::
+
+<?php
+ini_set("display_errors","1");
+ini_set('error_reporting', E_ALL);
+debug_backtrace();
+
+function makeCocktail()
+{
+    try {
+        pour_ingredients();
+        stir();
+    } catch (Exception $e) {
+        die("I could not make you a cocktail");
+    }
+
+    try {
+        put_decorative_umbrella();
+    } catch (Exception $e) {
+        echo "We 're out of umbrellas, but the drink itself is fine";
+    }
+
+	try {
+        $res = 10 / 0;
+    } catch (Exception $e) {
+        echo "Classical Example of try catch - divide b zero";
+    }
+}
+
+echo "start";
+makeCocktail();
+
+::::::::::::::::::::::::::::::::::::::ERROR NOTICE WARNING :::::::::::::::::::::::::::::::::::::::::::
+
+Notice	Warning	Error
+A notice is an advisory message meaning "You probably shouldn't be doing what you're doing, but I'll let you do it anyway"	A warning is a message saying "You are doing something wrong and it is very likely to cause errors in the future, so please fix it."	Fatal run-time errors. These indicate errors that can not be recovered from,
+echoing a variable that is not defined.	including a file that is not present using include()	"including a file that is not present using require()
+Semicolon missing"
+
+
+::::::::::::::::::::::::::::::::::::::::::CRON ::::::::::::::::::::::::::::::::::::::::::::::::::
+
+CRON - Meaning
+--------------
+Cron means we can schedule a task which can run at a certain time.
+	Methods  :
+	----------
+	1) either create a different file and add to cron tab (ex:1)
+	2) crontab -e and write to the file directly
+
+	Linux Crontab Format (Syntax) :
+	------------------------------
+	MIN HOUR DOM MON DOW CMD
+	
+	Here :
+
+	MIN		Minute field		0 to 59
+	HOUR	Hour field			0 to 23
+	DOM		Day of Month		1-31
+	MON		Month field			1-12
+	DOW		Day Of Week			0-6
+	CMD		Command	Any command to be executed.
+
+	Keyword	Equivalent
+	-------------------
+	@yearly		0 0 1 1 *
+	@daily		0 0 * * *
+	@hourly		0 * * * *
+	@reboot		Run at startup.
+
+	Basic Commands:
+	---------------
+	crontab -l  ->  to view the cron
+	crontab -e  ->  to edit the cron
+	crontab -r  ->  to remove the cron
+
+
+Using a CRON
+------------
+
+1) Install crontab.
+2) Check by command in terminal 
+	crontab -l 
+
+	1st time o/p
+	-------------
+	siddarth@administrator:~/Keys$ crontab -l
+	no crontab for siddarth
+
+Deleting a cron
+----------------
+crontab -r
+or
+crontab -e and edit the file , remove the particular cron
+
+ex 1 : "ls" to a file every 1 minute [LINUX RELATED]
+-----------------------------------------------------
+1) create a file cronTest.txt in /home/siddarth
+write in file:
+# output ls to file every minute
+* * * * * ls >> /home/siddarth/cronLog.log
+
+
+2) run command to add a cron to cron tab 
+crontab cronTest.txt 
+
+3) create a file /home/siddarth/cronLog.log
+
+4) check /home/siddarth/cronLog.log after 5 minutes.
+
+ex 2 : run php file every 1 minute to insert a value in database [PHP RELATED]
+------------------------------------------------------------------------------
+1) create a file cronTest.txt in /home/siddarth
+write in file:
+# run the php file to insert value in db
+* * * * * php /var/www/Dump/cronTest.php
+
+
+2) run command to add a cron to cron tab 
+crontab cronTest.txt 
+
+3) create a file /var/www/Dump/cronTest.php
+write code :
+			/*** mysql hostname ***/
+			$hostname = 'localhost';
+
+			/*** mysql username ***/
+			$username = 'root';
+
+			/*** mysql password ***/
+			$password = 'root';
+
+			try {
+			    $dbh = new PDO("mysql:host=$hostname;dbname=test", $username, $password);
+			    /*** echo a message saying we have connected ***/
+			    // echo 'Connected to database';
+			    /*** INSERT data ***/
+			    $count = $dbh->exec("INSERT INTO testing(name) VALUES ('test')");
+
+			    /*** echo the number of affected rows ***/
+			    // echo $count;
+
+			    /*** close the database connection ***/
+			    $dbh = null;
+			    }
+			catch(PDOException $e)
+			    {
+			    echo $e->getMessage();
+			    }
+
+4) check database , test database,testing table after 5 minutes.
+
+:::::::::::::::::::::::::::::::::::::CONSTANTS ::::::::::::::::::::::::::::::::::::::
+
+/*
+* constants are defined in 2 ways in php
+
+define('','');
+const name = value;
+
+const could not be used in the global scope. You could only use this from within a class. This should be used when you want to set some kind of constant option or setting that pertains to that class. Or maybe you want to create some kind of enum.
+
+define can be used for the same purpose, but it can only be used in the global scope. It should only be used for global settings that affect the entire application.
+*/
+
+
+<?php
+
+// Valid constant names
+define("ONE",     "first thing");
+define("TWO",    "second thing");
+
+define("ONE",     "first thing again");
+echo ONE;
+
+class A {
+	const THREE = 123;
+
+	function test()
+	{
+		echo THREE;
+	}
+}
+$a = new A();
+$a->test();
+
+::::::::::::::::::::::::::::::::::::::::::::::::MAGIC CONSTATNTS :::::::::::::::::::::::::::::::::::::
+
+-----------------------------------------------------------------------------------------------------------------------------------
+Name			Description
+-----------------------------------------------------------------------------------------------------------------------------------
+__LINE__	 	The current line number of the file.
+
+__FILE__	 	The full path and filename of the file. If used inside an include, the name of the included file is returned. 
+Since PHP 4.0.2, __FILE__ always contains an absolute path with symlinks resolved whereas in older versions it contained relative path under some circumstances.
+
+__DIR__	 		The directory of the file. If used inside an include, the directory of the included file is returned. This is equivalent to dirname(__FILE__). This directory name does not have a trailing slash unless it is the root directory. (Added in PHP 5.3.0.)
+
+__FUNCTION__	The function name. (Added in PHP 4.3.0) As of PHP 5 this constant returns the function name as it was declared (case-sensitive). In PHP 4 its value is always lowercased.
+
+__CLASS__	 	The class name. (Added in PHP 4.3.0) As of PHP 5 this constant returns the class name as it was declared (case-sensitive). In PHP 4 its value is always lowercased. The class name includes the namespace it was declared in (e.g. Foo\Bar). Note that as of PHP 5.4 __CLASS__ works also in traits. When used in a trait method, __CLASS__ is the name of the class the trait is used in.
+
+__TRAIT__	 	The trait name. (Added in PHP 5.4.0) As of PHP 5.4 this constant returns the trait as it was declared (case-sensitive). The trait name includes the namespace it was declared in (e.g. Foo\Bar).
+
+__METHOD__	 	The class method name. (Added in PHP 5.0.0) The method name is returned as it was declared (case-sensitive).
+
+__NAMESPACE__	The name of the current namespace (case-sensitive). This constant is defined in compile-time (Added in PHP 5.3.0).
+
+:::::::::::::::::::::::::::::::::::::::::: ABSTRACT VS INTERFACE ::::::::::::::::::::::::::::::::::::::::::::::::::
+
+S.No	Abstract Class	Interface
+1	For abstract class a method must be declared as abstract. Abstract methods doesn’t have any implementation.	For interface all the methods by default are abstract methods only. So one cannot declare variables or concrete methods in interfaces.
+2	The Abstract methods can declare with Access modifiers like public, internal, protected. When implementing in subclass these methods must be defined with the same (or a less restricted) visibility.	All methods declared in an interface must be public.
+3	Abstract class can contain variables and concrete methods.	Interfaces cannot contain variables and concrete methods except constants.
+4	A class can Inherit only one Abstract class and Multiple inheritance is not possible for Abstract class.	A class can implement many interfaces and Multiple interface inheritance is possible.
+
+
+::::::::::::::::::::::::::::::::::::::: OOPS REAL LIFE EXAMPLE ::::::::::::::::::::::::::::::::::::::::::::::::::
+
+OOPS Concept With Real Life Example
+------------------------------------
+
+
+Objects: 
+-------
+Object is the basic unit of object-oriented programming.Objects are identified by its unique name. An objectrepresents a particular instance of a class. There can be more than one instance of an object. Each instance of an object can hold its own relevant data.
+
+An Object is a collection of data members and associated member functions also known as methods.
+
+Classes:
+-------
+ Classes are data types based on which objects are created.Objects with similar properties and methods are grouped together to form a Class. Thus a Class represent a set of individual objects. Characteristics of an object are represented in a class as Properties. The actions that can be performed by objects becomes functions of the class and is referred to as Methods.
+
+Example #1:
+
+For example consider we have a Class of Cars under which Santro Xing, Alto and WaganR represents individual Objects.In this context each Car Object will have its own, Model,Year of Manufacture, Colour, Top Speed, Engine Power etc.,which form Properties of the Car class and the associated actions i.e., object functions like Start, Move, Stop form the Methods of Car Class.No memory is allocated when a class is created. Memory is
+allocated only when an object is created, i.e., when an instance of a class is created.
+
+Example #2:
+
+An architect will have the blueprints for a house....those blueprints will be plans that explain exactly what properties the house will have and how they are all layed out.  However it is just the blueprint, you can't live in it.  Builders will look at the blueprints and use those blueprints to make a physical house.  They can use the same blueprint to make as many houses as they want....each house will have the same layout and properties.  Each house can accommodate it's own families...so one house might have the Smiths live in it, one house might have the Jones live in it.
+
+The blueprint is the class...the house is the object.  The people living in the house are data stored in the object's properties.
+
+Abstraction: 
+-----------
+Abstraction means showing essential features and hiding non-essential features to the user.
+
+For Eg.  Yahoo Mail...
+
+When you provide the user name and password and click on submit button..It will show Compose,Inbox,Outbox,Sentmails...so and so when you click on compose it will open...but user doesn't
+know what are the actions performed internally....It just Opens....that is essential; User doesn't know internal actions ...that is non-essential things...
+
+For Eg. Tv Remote..
+Remote is a interface between user and tv..right. which has buttons like 0 to 10 ,on /of etc but we dont know circuits inside remote...User does not  need to know..Just he is using essential thing that is remote.
+ 
+
+Encapsulation:
+-------------
+ Encapsulation means which binds the data and code (or) writing operations and methods in single unit (class).
+ 
+For Example:
+A car is having multiple parts..like steering,wheels,engine...etc..which binds together to form a single object that is car. So, Here multiple parts of cars encapsulates itself together to form a single object that is Car.
+
+In real time we are using Encapsulation for security purpose...
+
+Encapsulation = Abstraction + Data Hiding.
+
+
+Inheritance: 
+-----------
+Deriving a new class from the existing class,is called Inheritance.
+Derived(sub class) class is getting all the features from Existing (super class\base class) class and also incorporating some new features to the sub class.
+
+In the above Example class LatestAddress getting all features from the Address class.
+In the LatestAddress class we have total 6 properties..3 are inherited from Address class and 3 properties are
+incorporated. So In the class Vishal we are declaring the object of class LatestAddress and then assign new variables using the properties of the previous base classes... So this is a nice example of inheritance..
+
+Polymorphism :
+-------------
+Polymorphism means ability to take more than one form that an operation can exhibit different behavior at different instance depend upon the data passed in the operation.
+
+1>We behave differently in front of elders, and friends. A single person is behaving differently at different time.
+
+2> A software engineer can perform different task at different instance of time depending on the task assigned  to him .He can done coding , testing , analysis and designing depending on the task assign and the requirement.
+
+3> Consider the stadium of common wealth games. Single stadium but it perform multiple task like swimming, lawn tennis etc.
+
+4> If a girl is married and mother of 2 children doing teaching job then  she is a women first ,, teacher in a school when she is in school,,wife of someone at home,, mother of her children,, and obvious daughter of someone & may be girl friend of someone (just kidding) means a woman plays diffent roles at different times dats the polymorphism (many forms).
+
+Summary:
+OOPs have following features:
+
+1. Object             	- Instance of Class
+2. Class               	- Blue print of Object 
+3. Encapsulation    	- Protecting our Data
+4. Polymorphism   		- Different behaviors at different instances
+5. Abstraction        	- Hiding our irrelevant Data
+6. Inheritence        	- One property of object is acquiring to another property of object
+
+::::::::::::::::::::::::::::::::::::::::::: TOPICS TO PREPARE ::::::::::::::::::::::::::::::::::::
+
+oops - complete cons,desc,clone,magic fn,static,
++ real life ex
+mysql - conn
+json 
+jquery - modulation,has sign,
+cron job
+jquery current ver
+php current ver
+mysql current ver
+session
+cookies 
+without cookies session
+xss - cross site scriptiong
+sql injection
+ajax
+mvc
+$$ in php
+pass by value, pass by ref
+return type in ajax specific
+in db col contains colors replace black with white and white wjith black
